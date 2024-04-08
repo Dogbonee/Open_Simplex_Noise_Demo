@@ -26,7 +26,7 @@ class Program {
 
     float m_dt;
     float m_elapsedTime;
-    float m_time;
+
 
     void Update();
     void HandleEvents();
