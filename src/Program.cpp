@@ -13,7 +13,6 @@ m_noise(time(nullptr)), m_elapsedTime(0), m_pointBuf(sf::Points)
     sf::Vertex point;
     for(int y = 0; y < HEIGHT; y++)
     {
-        std::vector<sf::Vertex> m_vertexRow;
         for(int x = 0; x <WIDTH; x++)
         {
             point.position = sf::Vector2f(x,y);
