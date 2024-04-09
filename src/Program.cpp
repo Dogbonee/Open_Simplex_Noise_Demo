@@ -8,7 +8,7 @@ Program::Program() : m_window(sf::VideoMode(WIDTH, HEIGHT), "Open Simplex Noise"
 m_noise(time(nullptr)), m_elapsedTime(0), m_pointBuf(sf::Points)
 {
     m_pointCount = WIDTH * HEIGHT;
-    m_points = (sf::Vertex*)malloc(sizeof(sf::Vertex) * m_pointCount);
+    m_points = new sf::Vertex[m_pointCount];
 
     sf::Vertex point;
     for(int y = 0; y < HEIGHT; y++)
@@ -25,7 +25,10 @@ m_noise(time(nullptr)), m_elapsedTime(0), m_pointBuf(sf::Points)
     m_pointBuf.update(m_points);
 }
 
-Program::~Program() = default;
+Program::~Program()
+{
+    delete[] m_points;
+}
 
 void Program::Update()
 {
