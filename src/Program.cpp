@@ -82,7 +82,7 @@ void Program::ComputeNoise()
     {
         for(int x = 0; x < WIDTH; x++)
         {
-            double result = m_noise.eval(x / SCALE, y / SCALE, m_elapsedTime);
+            double result = m_noise.eval((double)x / SCALE, (double)y / SCALE, m_elapsedTime);
             int rgb = (result + 1) * 128;
             int roundedRgb = rgb >= 128 ? 255 : 0;
             m_points[WIDTH * y + x].color = sf::Color(roundedRgb,roundedRgb,roundedRgb);
