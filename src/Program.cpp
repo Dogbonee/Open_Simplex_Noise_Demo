@@ -6,6 +6,8 @@
 
 Program::Program() : m_window(sf::VideoMode(WIDTH, HEIGHT), "Open Simplex Noise")
 {
+
+    m_window.setFramerateLimit(120);
     m_noiseShader.loadFromFile("../shaders/simplex.glsl", sf::Shader::Fragment);
 
     m_shaderShape.setSize(sf::Vector2f(WIDTH,HEIGHT));
