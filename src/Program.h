@@ -8,23 +8,17 @@
 #include <iostream>
 #include <cmath>
 
-#include "OpenSimplexNoise.h"
 
 class Program {
 
-    static constexpr int WIDTH = 800;
-    static constexpr int HEIGHT = 600;
-    static constexpr double SCALE = 100;
-
-    sf::Vertex* m_points;
-    sf::VertexBuffer m_pointBuf;
-    unsigned long m_pointCount;
+    const int WIDTH = 800;
+    const int HEIGHT = 600;
 
     sf::RenderWindow m_window;
-    sf::Clock m_clock;
-    OpenSimplexNoise::Noise m_noise;
+    sf::Shader m_noiseShader;
+    sf::RectangleShape m_shaderShape;
 
-    float m_dt;
+    sf::Clock m_clock;
     float m_elapsedTime;
 
 
@@ -32,8 +26,6 @@ class Program {
     void HandleEvents();
     void HandleKeyboardInput(sf::Keyboard::Key key);
     void Render();
-
-    void ComputeNoise();
 
 public:
     Program();

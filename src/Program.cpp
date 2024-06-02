@@ -4,38 +4,24 @@
 
 #include "Program.h"
 
-Program::Program() : m_window(sf::VideoMode(WIDTH, HEIGHT), "Open Simplex Noise"),
-m_noise(time(nullptr)), m_elapsedTime(0), m_pointBuf(sf::Points)
+Program::Program() : m_window(sf::VideoMode(WIDTH, HEIGHT), "Open Simplex Noise")
 {
-    m_pointCount = WIDTH * HEIGHT;
-    m_points = new sf::Vertex[m_pointCount];
+    m_noiseShader.loadFromFile("../shaders/simplex.glsl", sf::Shader::Fragment);
 
-    sf::Vertex point;
-    for(int y = 0; y < HEIGHT; y++)
-    {
-        for(int x = 0; x <WIDTH; x++)
-        {
-            point.position = sf::Vector2f(x,y);
-            m_points[y * WIDTH + x] = point;
-        }
-
-    }
-
-    m_pointBuf.create(m_pointCount);
-    m_pointBuf.update(m_points);
+    m_shaderShape.setSize(sf::Vector2f(WIDTH,HEIGHT));
 }
 
 Program::~Program()
 {
-    delete[] m_points;
+
 }
 
 void Program::Update()
 {
-    m_dt = m_clock.restart().asSeconds();
-    m_elapsedTime += m_dt;
-
-    ComputeNoise();
+    float lastElapsedTime = m_elapsedTime;
+    m_elapsedTime = m_clock.getElapsedTime().asSeconds();
+    m_noiseShader.setUniform("iResolution", sf::Glsl::Vec2(m_window.getSize()));
+    m_noiseShader.setUniform("iTime", m_elapsedTime);
     HandleEvents();
     Render();
 }
@@ -73,26 +59,11 @@ void Program::Render()
 {
     m_window.clear();
 
-    m_pointBuf.update(m_points);
-    m_window.draw(m_pointBuf);
+    m_window.draw(m_shaderShape, &m_noiseShader);
 
     m_window.display();
 }
 
-void Program::ComputeNoise()
-{
-    for(int y = 0; y < HEIGHT; y++)
-    {
-        for(int x = 0; x < WIDTH; x++)
-        {
-            double result = m_noise.eval((double)x / SCALE, (double)y / SCALE, m_elapsedTime);
-            int rgb = (result + 1) * 128;
-            int roundedRgb = rgb >= 128 ? 255 : 0;
-            m_points[WIDTH * y + x].color = sf::Color(roundedRgb,roundedRgb,roundedRgb);
-
-        }
-    }
-}
 
 void Program::Run()
 {
